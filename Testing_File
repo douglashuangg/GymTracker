@@ -1,1 +1,5 @@
-print("Hello World")
+x=input(print("is this douglas? Y or N"))
+if x == "Y":
+  print("ur a snake")
+else:
+  print("OLIVIA GAP")
