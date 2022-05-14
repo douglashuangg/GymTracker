@@ -16,21 +16,23 @@ class Security:
     def get_length(self):
         pin_length = input('Please enter the length of your PIN (4-8 digits): ')
 
-        try:
-            pin_length = int(pin_length)
-            if (pin_length >= 4 and pin_length <= 8):
-                self.pass_length = pin_length
-                return
-        except ValueError:
-            while (True):
-                pin_length = input('Please enter a valid length of your PIN (4-8 digits): ')
-                try:
-                    pin_length = int(pin_length)
-                    if (pin_length >= 4 and pin_length <= 8):
-                        self.pass_length = pin_length
-                        return
-                except ValueError:
-                    continue
+        # try:
+        #     pin_length = int(pin_length)
+        #     if (pin_length >= 4 and pin_length <= 8):
+        #         self.pass_length = pin_length
+        #         return
+        # except ValueError:
+        #     while (True):
+        #         pin_length = input('Please enter a valid length of your PIN (4-8 digits): ')
+        #         try:
+        #             pin_length = int(pin_length)
+        #             if (pin_length >= 4 and pin_length <= 8):
+        #                 self.pass_length = pin_length
+        #                 return
+        #         except ValueError:
+        #             continue
+
+        # https://stackoverflow.com/questions/71115542/how-to-repeat-the-input-until-a-special-condition-is-meet-in-python
 
         self.pass_length = pin_length
         return
