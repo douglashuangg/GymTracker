@@ -1,3 +1,4 @@
+from pickle import FALSE
 from re import S
 import cv2
 import mediapipe as mp
@@ -5,7 +6,7 @@ import numpy as np
 import math
 import time
 
-class PostureTrack:
+class PostureTrack: #Contructor, init mediapipe ML for tracking the pose
     def __init__(self , static_mode=False , model_complexity=1 , smooth_landmarks=True , segmentation=False , smooth_segmentation=True , detectionCon=0.5 , trackingCon=0.5):
         self.static_mode = static_mode
         self.model_complexity = model_complexity
@@ -15,11 +16,16 @@ class PostureTrack:
         self.detectionCon = detectionCon
         self.trackingCon = trackingCon
 
-        self.mp_drawing = mp.solutions.drawing_utils
+        self.mp_drawing = mp.solutions.drawing_utils # Using mediapipe Solutions Python API
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.mp_pose = mp.solutions.pose
 
     def trackPosture(self , img , draw=True):
+        """
+        img: Frame that lines are drawn on. Frames are passed in at high speeds to create a video
+        draw: Bool if we want to draw lines
+
+        """
         with self.mp_pose.Pose(
                 self.static_mode ,
                 self.model_complexity ,
@@ -30,7 +36,7 @@ class PostureTrack:
                 self.trackingCon
             ) as pose:
 
-            imgRGB = cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
+            imgRGB = cv2.cvtColor(img , cv2.COLOR_BGR2RGB) # stores the current frame in RGB version
             self.results = pose.process(imgRGB)
 
             if self.results.pose_landmarks:
@@ -109,7 +115,6 @@ def main():
         lmList = tracker.trackPoints(img)
 
         if len(lmList) != 0:
-            pass
             tracker.calcAngle(img , 12 , 14 , 16)
             tracker.calcAngle(img_iso , 12 , 14 , 16)
 
