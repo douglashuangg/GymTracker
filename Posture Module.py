@@ -7,7 +7,7 @@ import math
 import time
 
 class PostureTrack: #Contructor, init mediapipe ML for tracking the pose
-    def __init__(self , static_mode=False , model_complexity=1 , smooth_landmarks=True , segmentation=False , smooth_segmentation=True , detectionCon=0.5 , trackingCon=0.5):
+    def __init__(self, static_mode=False , model_complexity=1 , smooth_landmarks=True , segmentation=False , smooth_segmentation=True , detectionCon=0.5 , trackingCon=0.5):
         self.static_mode = static_mode
         self.model_complexity = model_complexity
         self.smooth_landmarks = smooth_landmarks
