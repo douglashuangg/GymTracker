@@ -23,7 +23,7 @@ class PostureTrack: #Contructor, init mediapipe ML for tracking the pose
     def trackPosture(self , img , draw=True):
         """
         img: Frame that lines are drawn on. Frames are passed in at high speeds to create a video
-        draw: Bool if we want to draw lines
+        draw: Bool if we want to draw lines s
 
         """
         with self.mp_pose.Pose(
