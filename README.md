@@ -1,1 +1,4 @@
 # GymTracker
+
+
+pip install mediapipe
