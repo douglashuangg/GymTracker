@@ -1,11 +1,27 @@
-from re import S
 import cv2
 import mediapipe as mp
 import numpy as np
 import math
-import time
 
 class PostureTrack:
+    ''' 
+        Landmark collections for certain work-outs. Dictionaries structured with
+        Keys: point where the angle is measured
+        Lists: 2D list of landmarks that include the angle. Position [0] is the right side, Position [1] is the left
+    '''
+    pushUp_lm = {
+        "waist" : [[12 , 24 , 28] , [11 , 23 , 27]] ,
+        "knees" : [[24 , 26 , 28] , [23 , 25 , 27]] ,
+        "elbows" : [[12 , 14 , 16] , [11 , 13 , 15]] ,
+    }   # ** Planks will use the same landmarks as push ups
+
+    benchPress_lm = {
+        "wrist" : [[] , []] ,
+        "ankles" : [[] , []] ,
+        "back" : [] ,
+        "waist" : [[] , []] ,
+    }
+
     def __init__(self , static_mode=False , model_complexity=1 , smooth_landmarks=True , segmentation=False , smooth_segmentation=True , detectionCon=0.5 , trackingCon=0.5):
         self.static_mode = static_mode
         self.model_complexity = model_complexity
@@ -92,11 +108,9 @@ class PostureTrack:
 
             cv2.putText(img , str(int(angle)) , (x2 + 20 , y2 + 10) , cv2.FONT_HERSHEY_PLAIN , 1 , (255 , 255 , 255))
 
-
+# ** use main() to test any new functions to PostureTrack class or PostureModule.py
 def main():
     cap = cv2.VideoCapture(0)
-    ptime = 0
-    ctime = 0
 
     while True:
         success , img = cap.read()
@@ -104,34 +118,35 @@ def main():
         img_iso.fill(0)
         tracker = PostureTrack()
 
+        blur = cv2.GaussianBlur(img , (5 , 5) , cv2.BORDER_DEFAULT)
+        canny = cv2.Canny(blur , 125 , 175)
+
         img = tracker.trackPosture(img)
         img_iso = tracker.isolatePosture(img_iso)
         lmList = tracker.trackPoints(img)
 
         if len(lmList) != 0:
-            pass
             tracker.calcAngle(img , 12 , 14 , 16)
             tracker.calcAngle(img_iso , 12 , 14 , 16)
 
-        # ==============================================================
-        # DISPLAY VIDEO WINDOWS
-        # ==============================================================
-
-        # ==============================================================
-        # FPS display
-        # ==============================================================
+# DISPLAY VIDEO WINDOWS
+# ==============================================================
+# FPS display
         # ctime = time.time()
         # fps = 1 / (ctime - ptime)
         # cv2.putText(img , str(int(fps)) , (0 , 0) , cv2.FONT_HERSHEY_PLAIN , 3 , (255 , 0 , 0) , 3)
-        
-        # ==============================================================
-        # Pose Display, Isolated Pose Display
-        # ==============================================================
+
+# ==============================================================
+# Pose Display, Isolated Pose Display
         cv2.imshow("Capture" , img)
         cv2.imshow("Isolate Pose" , img_iso)
+        print(canny.shape)
 
         if cv2.waitKey(1) &0xFF == ord('x'):
             break
 
-if __name__ == '__main__':
-    main()
+# Deallocate all associated memory objects
+    cv2.destroyAllWindows()
+
+# if __name__ == '__main__':
+#     main()
