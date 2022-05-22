@@ -140,7 +140,6 @@ def main():
 # Pose Display, Isolated Pose Display
         cv2.imshow("Capture" , img)
         cv2.imshow("Isolate Pose" , img_iso)
-        print(canny.shape)
 
         if cv2.waitKey(1) &0xFF == ord('x'):
             break
